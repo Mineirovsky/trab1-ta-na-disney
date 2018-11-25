@@ -5,13 +5,15 @@
 unsigned int _conf_line_length (FILE *conf_file)
 {
     char c;
-    unsigned int count;
+    unsigned int count = 1;
 
-    for (count = 1; c != EOF; count++)
+    do
     {
         c = fgetc(conf_file);
         if (c == '\n' || c == EOF) break;
-    }
+        else count++;
+
+    } while (c != EOF);
 
     fseek(conf_file, -(long int)count, SEEK_CUR);
 
@@ -147,27 +149,19 @@ void conf_delete (Conf *conf)
     free(conf->run_setups);
     conf->run_setups = NULL;
 }
-
-// TESTING ONLY
-void main()
+void print_rs (ConfRS rs)
 {
-    FILE *file = fopen("config.txt", "r");
+    printf("k: %d, a: %c, r: %.2f\n", rs.k, rs.algorithm, rs.r);
+}
 
-
-    Conf conf = get_config(file);
-    fclose(file);
-
+void print_config (Conf conf)
+{
     printf("Training file: %s\n", conf.training_file);
     printf("Testing file: %s\n", conf.testing_file);
     printf("Results dir: %s\n", conf.results_dir);
 
-    ConfRS *rs;
-
     for (int i = 0; i < conf.runs; i++)
     {
-        rs = conf.run_setups + i;
-        printf("k: %d, a: %c, r: %.2f\n", rs->k, rs->algorithm, rs->r);
+        print_rs(conf.run_setups[i]);
     }
-
-    conf_delete(&conf);
 }

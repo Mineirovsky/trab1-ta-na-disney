@@ -18,4 +18,8 @@ typedef struct conf_conf
 
 Conf get_config (FILE *conf_file);
 
+void print_rs (ConfRS rs);
+
+void print_config (Conf conf);
+
 void conf_delete (Conf *conf);
