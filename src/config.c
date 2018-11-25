@@ -2,6 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * @brief Mede o tamanho da linha a partir da posição atual no arquivo
+ *
+ * @param conf_file Arquivo
+ * @return unsigned int Tamanho da linha
+ */
 unsigned int _conf_line_length (FILE *conf_file)
 {
     char c;
@@ -20,6 +26,13 @@ unsigned int _conf_line_length (FILE *conf_file)
     return count;
 }
 
+/**
+ * @brief Aloca espaço, copia a linha a partir da posição atual do arquivo e
+ * move o cursor para a próxima linha
+ *
+ * @param conf_file Arquivo
+ * @return char* String com a linha
+ */
 char *_conf_get_line (FILE *conf_file)
 {
     long int fpos = ftell(conf_file);
@@ -33,6 +46,12 @@ char *_conf_get_line (FILE *conf_file)
     return string;
 }
 
+/**
+ * @brief Conta quantos parâmetros existem em uma string, divididos por vírgulas
+ *
+ * @param string String a ser verificada
+ * @return int Número de parâmetros
+ */
 int _conf_param_count(char *string)
 {
     unsigned int counter = 1;
@@ -53,6 +72,13 @@ int _conf_param_count(char *string)
     return counter;
 }
 
+/**
+ * @brief Carrega os parâmetros de teste na posição atual do arquivo e avança
+ * para a próxima linha
+ *
+ * @param conf_file Arquivo
+ * @return ConfRS Objeto com parâmetros de teste
+ */
 ConfRS _conf_get_rs (FILE *conf_file)
 {
     ConfRS rs;
@@ -90,6 +116,13 @@ ConfRS _conf_get_rs (FILE *conf_file)
     return rs;
 }
 
+/**
+ * @brief Conta quantas linhas não vazias ainda existem da posição atual até o
+ * final do arquivo
+ *
+ * @param conf_file Arquivo
+ * @return unsigned int Linhas remanescentes
+ */
 unsigned int _conf_count_remaining_lines (FILE *conf_file)
 {
     int counter = 1;
