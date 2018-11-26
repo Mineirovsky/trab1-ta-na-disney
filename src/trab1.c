@@ -1,13 +1,17 @@
 #include "trab1.h"
+#include "config_file.h"
 #include "csv.h"
 #include "knn.h"
 #include "knn_dataset.h"
+#include "knn_batch.h"
+#include "result.h"
 #include "confusion_matrix.h"
 #include <stdio.h>
 #include <string.h>
 
 int main(int argc, char const *argv[])
 {
+    FILE *config_file;
     // Imprime ajuda
     if (
         argc > 1 &&
@@ -26,10 +30,9 @@ int main(int argc, char const *argv[])
     // Linux não ultrapassam 4096 caracteres, usamos 4097 para acomodar o
     // terminador de string
     char training_filepath[4097], testing_filepath[4097], results_dirpath[4097];
+    int has_result_file = 0;
 
-    // Arquivo de configuração
-    FILE *cfg = fopen("config.txt", "r");
-
+    Conf config;
     // Parâmetros para as medições
     char distance_algorithm = 'E';
     unsigned int k = 7;
@@ -91,6 +94,8 @@ int main(int argc, char const *argv[])
             {
                 // Desliga o indicador para uso de arquivo de configuração
                 use_cfg = 0;
+                // Liga o indicador para arquico de resultado
+                has_result_file = 1;
             }
         }
     }
@@ -98,11 +103,20 @@ int main(int argc, char const *argv[])
     // Importa configurações do arquivo config.txt no diretório local
     if (use_cfg)
     {
+        // Arquivo de configuração
+        config_file = fopen("config.txt", "r");
+        if (config_file == NULL)
+        {
+            puts("There isn't a config.txt file in the current directory");
+            return EXIT_FAILURE;
+        }
 
+        config = get_config(config_file);
+        fclose(config_file);
     }
 
     // Importa o arquivo de treino
-    Csv training_csv = csv_import(training_filepath);
+    Csv training_csv = csv_import(use_cfg ? config.training_file : training_filepath);
     // Renomeia a tabela CSV
     strcpy(training_csv.title, "TRAINING SET");
     // Verifica se é válido
@@ -119,7 +133,7 @@ int main(int argc, char const *argv[])
     }
 
     // Importa o arquivo de testes
-    Csv testing_csv = csv_import(testing_filepath);
+    Csv testing_csv = csv_import(use_cfg ? config.testing_file : testing_filepath);
     // Renomeia a tabela CSV
     strcpy(testing_csv.title, "TESTING SET");
     // Verifica se é válido
@@ -163,52 +177,43 @@ int main(int argc, char const *argv[])
         knn_dataset_print(testset, testset_s, n);
     }
 
-    // Extrai todas as labels do dataset
-    KnnLL labels = knn_get_labels(dataset, dataset_s);
-    // Converte para int
-    int *labels_i = malloc(sizeof(int) * labels.count);
-    int labels_s = labels.count;
-    for (int i = 0; i < labels_s; i++)
+    Result *results = knn_batch(n, dataset, dataset_s, testset, testset_s, config);
+
+    if (g_verbose)
     {
-        labels_i[i] = labels.labels[i];
-    }
-    free(labels.labels);
-
-    KnnLabel class;
-    KnnDA da;
-
-    unsigned int assertions = 0;
-
-    ConfusionMatrix cm = cm_new(labels.count);
-    cm_set_labels(&cm, labels_i);
-
-    switch (distance_algorithm)
-    {
-        case 'C':
-            da = Chebyshev;
-            break;
-
-        case 'M':
-            da = Minkowski;
-            break;
-        default:
-        case 'E':
-            da = Euclidian;
-            break;
-    }
-    for (int i = 0; i < testset_s; i++)
-    {
-        class = knn_classify(testset + i, dataset, dataset_s, n, k, da, r);
-        if (cm_inc(&cm, (int)class, (int)testset[i].label)) assertions++;
+        for (int i = 0; i < config.runs; i++)
+        {
+            result_print(results[i]);
+        }
     }
 
-    printf("Accuracy: %.2f (%d/%d)\n", (float)assertions / (float)testset_s, assertions, testset_s);
-    cm_print(&cm);
+    // Salvar arquivos de resultados
+    FILE *result_file;
+    char result_filename_buffer[257];
+    if (use_cfg)
+    {
+        for (int i = 0; i < config.runs; i++)
+        {
+            sprintf(
+                result_filename_buffer,
+                "%spredicao_%d.txt",
+                use_cfg ? config.results_dir : results_dirpath,
+                i + 1
+            );
+            if (!i) result_file = fopen(result_filename_buffer, "w");
+            else freopen(result_filename_buffer, "w", result_file);
 
-    free(labels_i);
-    cm_delete(&cm);
+            result_fprint(results[i], result_file);
+        }
+        fclose(result_file);
+    } else if (has_result_file)
+    {
+
+    }
+
     knn_dataset_delete(dataset, dataset_s);
     knn_dataset_delete(testset, testset_s);
+
     return EXIT_SUCCESS;
 }
 
