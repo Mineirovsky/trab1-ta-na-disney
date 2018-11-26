@@ -1,4 +1,5 @@
 all:
+	mkdir -p obj
 	$(MAKE) -C src
 
 .PHONY: clean
