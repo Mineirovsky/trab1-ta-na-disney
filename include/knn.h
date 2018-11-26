@@ -8,7 +8,7 @@
 extern "C" {
 #endif // __cplusplus
 
-typedef float knn_label;
+typedef float KnnLabel;
 
 /**
  * @brief Uma estrutura para acomodar um ponto de dado
@@ -16,18 +16,18 @@ typedef float knn_label;
  */
 typedef struct knn_datapoint
 {
-    knn_label label; /** Classe do ponto */
+    KnnLabel label; /** Classe do ponto */
     float *data; /** Vetor de coordenadas do ponto */
-} knn_dp;
+} KnnDP;
 
 /**
  * @brief Cria uma nova instância de um ponto de dados
  *
  * @param label Classe do ponto
  * @param data Vetor de coordenadas
- * @return knn_dp Nova instancia de ponto de dados
+ * @return KnnDP Nova instancia de ponto de dados
  */
-knn_dp knn_new (knn_label label, float *data);
+KnnDP knn_new (KnnLabel label, float *data);
 
 /**
  * @brief Enumarador de nomes de algorítmos para calcular distâncias
@@ -51,8 +51,8 @@ typedef enum KnnDistanceAlgorithm
  * @return float Distância calculada
  */
 float knn_dist (
-    knn_dp *p,
-    knn_dp *q,
+    KnnDP *p,
+    KnnDP *q,
     unsigned int n,
     KnnDA da,
     float r
@@ -65,11 +65,11 @@ float knn_dist (
  */
 typedef struct knn_distance
 {
-    knn_dp *q; /** Referência ao ponto */
+    KnnDP *q; /** Referência ao ponto */
     float distance; /** Distância calculada */
-} knn_dt;
+} KnnDT;
 
-knn_dt knn_dt_new(knn_dp *p, float distance);
+KnnDT knn_dt_new(KnnDP *p, float distance);
 
 /**
  * @brief Calcula todas as distâncias entre p e os pontos no dataset
@@ -83,11 +83,11 @@ knn_dt knn_dt_new(knn_dp *p, float distance);
  * @param r Minkowski p-norm (Usado apenas se algoritmo for de Minkowski)
  */
 void knn_measure_all (
-    knn_dp *p,
-    knn_dp *dataset,
+    KnnDP *p,
+    KnnDP *dataset,
     unsigned int dataset_s,
     unsigned int n,
-    knn_dt *distances,
+    KnnDT *distances,
     KnnDA da,
     float r
 );
@@ -101,11 +101,11 @@ void knn_measure_all (
  * @param n Tamanho do espaço vetorial
  * @param da Algorítmo de distância a ser usado
  * @param r Minkowski p-norm (Usado apenas se algoritmo for de Minkowski)
- * @return knn_label
+ * @return KnnLabel
  */
-knn_label knn_classify (
-    knn_dp *p,
-    knn_dp *dataset,
+KnnLabel knn_classify (
+    KnnDP *p,
+    KnnDP *dataset,
     unsigned int dataset_s,
     unsigned int n,
     unsigned int k,
@@ -113,16 +113,17 @@ knn_label knn_classify (
     float r
 );
 
-void knn_delete (knn_dp *dp);
+void knn_delete (KnnDP *dp);
 
-void knn_print (knn_dp *dp, unsigned int n);
+void knn_print (KnnDP *dp, unsigned int n);
 
 typedef struct knn_label_list
 {
     unsigned int count;
-    knn_label *labels;
+    KnnLabel *labels;
 } KnnLL;
-KnnLL knn_get_labels (knn_dp *dataset, unsigned int dataset_s);
+
+KnnLL knn_get_labels (KnnDP *dataset, unsigned int dataset_s);
 
 #if __cplusplus
 }

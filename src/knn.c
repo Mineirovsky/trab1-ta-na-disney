@@ -4,15 +4,15 @@
 #include <stdlib.h>
 #include <math.h>
 
-knn_dp knn_new (knn_label label, float *data)
+KnnDP knn_new (KnnLabel label, float *data)
 {
-    knn_dp dp = {label, data};
+    KnnDP dp = {label, data};
     return dp;
 }
 
 float knn_dist (
-    knn_dp *p,
-    knn_dp *q,
+    KnnDP *p,
+    KnnDP *q,
     unsigned int n,
     KnnDA da,
     float r
@@ -39,11 +39,11 @@ float knn_dist (
 }
 
 void knn_measure_all (
-    knn_dp *p,
-    knn_dp *dataset,
+    KnnDP *p,
+    KnnDP *dataset,
     unsigned int dataset_s,
     unsigned int n,
-    knn_dt *distances,
+    KnnDT *distances,
     KnnDA da,
     float r
 )
@@ -65,8 +65,8 @@ void knn_measure_all (
 
 int _knn_dt_cmp (const void *p, const void *q)
 {
-    knn_dt *_p = (knn_dt*)p;
-    knn_dt *_q = (knn_dt*)q;
+    KnnDT *_p = (KnnDT*)p;
+    KnnDT *_q = (KnnDT*)q;
 
     if (_p->distance > _q->distance)
     {
@@ -82,7 +82,7 @@ int _knn_dt_cmp (const void *p, const void *q)
 
 struct _knn_label_counter
 {
-    knn_label label;
+    KnnLabel label;
     unsigned int count;
 };
 
@@ -111,11 +111,11 @@ int _knn_lc_cmp_by_label (const void *a, const void *b)
     }
 }
 
-knn_label _knn_most_present_label(knn_dt *distances, unsigned int k)
+KnnLabel _knn_most_present_label(KnnDT *distances, unsigned int k)
 {
     struct _knn_label_counter *labels = malloc(sizeof(struct _knn_label_counter) * k);
     unsigned int tie = 0;
-    knn_label result;
+    KnnLabel result;
 
     // Os contadores devem ser zerados pois o lixo na memória pode afetar o
     // comportamento deste algorítmo
@@ -171,24 +171,24 @@ knn_label _knn_most_present_label(knn_dt *distances, unsigned int k)
     return result;
 }
 
-void knn_delete (knn_dp *dp)
+void knn_delete (KnnDP *dp)
 {
     free(dp->data);
     dp->data = NULL;
 }
 
-knn_dt knn_dt_new(knn_dp *p, float distance)
+KnnDT knn_dt_new(KnnDP *p, float distance)
 {
-    knn_dt dt;
+    KnnDT dt;
     dt.q = p;
     dt.distance = distance;
 
     return dt;
 }
 
-knn_label knn_classify (
-    knn_dp *p,
-    knn_dp *dataset,
+KnnLabel knn_classify (
+    KnnDP *p,
+    KnnDP *dataset,
     unsigned int dataset_s,
     unsigned int n,
     unsigned int k,
@@ -196,12 +196,12 @@ knn_label knn_classify (
     float r
 )
 {
-    knn_dt *distances = malloc(sizeof(knn_dt) * dataset_s);
-    knn_label class;
+    KnnDT *distances = malloc(sizeof(KnnDT) * dataset_s);
+    KnnLabel class;
 
     knn_measure_all(p, dataset, dataset_s, n, distances, da, r);
 
-    qsort(distances, dataset_s, sizeof(knn_dt), _knn_dt_cmp);
+    qsort(distances, dataset_s, sizeof(KnnDT), _knn_dt_cmp);
 
     class = _knn_most_present_label(distances, (k < dataset_s ? k : dataset_s));
 
@@ -210,7 +210,7 @@ knn_label knn_classify (
     return class;
 }
 
-void knn_print (knn_dp *dp, unsigned int n)
+void knn_print (KnnDP *dp, unsigned int n)
 {
     printf("%.0f: (", dp->label);
     for (int i = 0; i < (n - 1); i++)
@@ -222,17 +222,17 @@ void knn_print (knn_dp *dp, unsigned int n)
 
 int _knn_label_cmp (const void *a, const void *b)
 {
-    knn_label *_a = (knn_label *) a;
-    knn_label *_b = (knn_label *) b;
+    KnnLabel *_a = (KnnLabel *) a;
+    KnnLabel *_b = (KnnLabel *) b;
 
     if (*_a == *_b) return 0;
     else if (*_a > *_b) return 1;
     else return -1;
 }
 
-KnnLL knn_get_labels (knn_dp *dataset, unsigned int dataset_s)
+KnnLL knn_get_labels (KnnDP *dataset, unsigned int dataset_s)
 {
-    knn_label *labels = malloc(sizeof(knn_label) * dataset_s);
+    KnnLabel *labels = malloc(sizeof(KnnLabel) * dataset_s);
     unsigned int counter = 0;
     int labels_eq;
 
@@ -260,9 +260,9 @@ KnnLL knn_get_labels (knn_dp *dataset, unsigned int dataset_s)
         }
     }
 
-    labels = realloc(labels, sizeof(knn_label) * counter);
+    labels = realloc(labels, sizeof(KnnLabel) * counter);
 
-    qsort(labels, counter, sizeof(knn_label), _knn_label_cmp);
+    qsort(labels, counter, sizeof(KnnLabel), _knn_label_cmp);
     KnnLL label_struct = {counter, labels};
     return label_struct;
 }

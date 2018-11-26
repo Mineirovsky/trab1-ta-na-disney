@@ -144,13 +144,13 @@ int main(int argc, char const *argv[])
     }
 
     // Converter o CSV de treino em um array de KnnDP
-    knn_dp *dataset = knn_dataset_from_csv(training_csv);
+    KnnDP *dataset = knn_dataset_from_csv(training_csv);
     unsigned int dataset_s = training_csv.rows;
     unsigned int n = training_csv.columns - 1;
     csv_delete(&training_csv);
 
     // Converter o CSV de testes em um array de KnnDP
-    knn_dp *testset = knn_dataset_from_csv(testing_csv);
+    KnnDP *testset = knn_dataset_from_csv(testing_csv);
     unsigned int testset_s = testing_csv.rows;
     csv_delete(&testing_csv);
 
@@ -174,7 +174,7 @@ int main(int argc, char const *argv[])
     }
     free(labels.labels);
 
-    knn_label class;
+    KnnLabel class;
     KnnDA da;
 
     unsigned int assertions = 0;

@@ -8,11 +8,11 @@
 extern "C" {
 #endif // __cplusplus
 
-knn_dp *knn_dataset_from_csv (Csv csv);
+KnnDP *knn_dataset_from_csv (Csv csv);
 
-void knn_dataset_delete (knn_dp *dataset, unsigned int dataset_s);
+void knn_dataset_delete (KnnDP *dataset, unsigned int dataset_s);
 
-void knn_dataset_print (knn_dp *dataset, unsigned int dataset_s, unsigned int n);
+void knn_dataset_print (KnnDP *dataset, unsigned int dataset_s, unsigned int n);
 
 #if __cplusplus
 }

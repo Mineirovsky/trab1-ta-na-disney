@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-knn_dp *knn_dataset_from_csv (Csv csv)
+KnnDP *knn_dataset_from_csv (Csv csv)
 {
-    knn_dp *dataset = malloc(sizeof(knn_dp) * csv.rows);
+    KnnDP *dataset = malloc(sizeof(KnnDP) * csv.rows);
     float *row_ptr;
     unsigned int n = csv.columns - 1;
 
@@ -20,7 +20,7 @@ knn_dp *knn_dataset_from_csv (Csv csv)
     return dataset;
 }
 
-void knn_dataset_delete (knn_dp *dataset, unsigned int dataset_s)
+void knn_dataset_delete (KnnDP *dataset, unsigned int dataset_s)
 {
     for (int i = 0; i < dataset_s; i++)
     {
@@ -31,7 +31,7 @@ void knn_dataset_delete (knn_dp *dataset, unsigned int dataset_s)
     dataset = NULL;
 }
 
-void knn_dataset_print (knn_dp *dataset, unsigned int dataset_s, unsigned int n)
+void knn_dataset_print (KnnDP *dataset, unsigned int dataset_s, unsigned int n)
 {
     for (int i = 0; i < dataset_s; i++)
     {
