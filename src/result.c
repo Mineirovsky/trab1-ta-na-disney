@@ -6,10 +6,12 @@
 
 void result_fprint(Result result, FILE *result_file)
 {
+    // Imprime métricas
     fprintf(result_file, "%.2f\n\n", result.accuracy);
     cm_fprint(&result.cm, result_file);
     printf("\n");
 
+    // Imprime cada label encontrada
     for (int i = 0; i < result.samples; i++)
     {
         fprintf(result_file, "%.0f\n", result.predictions[i]);
@@ -23,7 +25,7 @@ void result_print(Result result)
 
 void result_delete(Result *result)
 {
-    if (!result->predictions)
+    if (result->predictions)
     {
         free(result->predictions);
         result->predictions = NULL;
