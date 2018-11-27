@@ -1,3 +1,13 @@
+/**
+ * @file knn_batch.h
+ * @author Gabriel Mineiro (gabrielpfgmineiro@gmail.com)
+ * @brief Módulo para lidar com baterias de testes
+ * @version 1.0
+ * @date 2018-11-27
+ *
+ * @copyright Copyright (c) 2018
+ *
+ */
 #ifndef KNN_BATCH_H
 #define KNN_BATCH_H
 

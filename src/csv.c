@@ -1,3 +1,13 @@
+/**
+ * @file csv.c
+ * @author Gabriel Mineiro (gabrielpfgmineiro@gmail.com)
+ * @brief Módulo para lidar com arquivos e tabelas CSV
+ * @version 1.0
+ * @date 2018-11-27
+ *
+ * @copyright Copyright (c) 2018
+ *
+ */
 #include "csv.h"
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,3 +1,13 @@
+/**
+ * @file trab1.c
+ * @author Gabriel Mineiro (gabrielpfgmineiro@gmail.com)
+ * @brief Classifica pontos usando algorítmo KNN
+ * @version 1.0
+ * @date 2018-11-27
+ *
+ * @copyright Copyright (c) 2018
+ *
+ */
 #include "trab1.h"
 #include "config_file.h"
 #include "csv.h"

@@ -1,3 +1,13 @@
+/**
+ * @file confusion_matrix.h
+ * @author Gabriel Mineiro (gabrielpfgmineiro@gmail.com)
+ * @brief Módulo para a matriz de confusão
+ * @version 1.0
+ * @date 2018-11-27
+ *
+ * @copyright Copyright (c) 2018
+ *
+ */
 #ifndef CONF_MATRIX_H
 #define CONF_MATRIX_H
 

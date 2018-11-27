@@ -1,3 +1,13 @@
+/**
+ * @file knn.h
+ * @author Gabriel Mineiro (gabrielpfgmineiro@gmail.com)
+ * @brief Implementação de um algorítmo KNN
+ * @version 0.1
+ * @date 2018-11-27
+ *
+ * @copyright Copyright (c) 2018
+ *
+ */
 #ifndef KNN_H
 #define KNN_H
 

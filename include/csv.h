@@ -1,3 +1,13 @@
+/**
+ * @file csv.h
+ * @author Gabriel Mineiro (gabrielpfgmineiro@gmail.com)
+ * @brief Módulo para lidar com arquivos e tabelas CSV
+ * @version 1.0
+ * @date 2018-11-27
+ *
+ * @copyright Copyright (c) 2018
+ *
+ */
 #ifndef CSV_H
 #define CSV_H
 

@@ -1,3 +1,13 @@
+/**
+ * @file distancia.c
+ * @author Gabriel Mineiro (gabrielpfgmineiro@gmail.com)
+ * @brief Módulo para calcular distâncias
+ * @version 1.0
+ * @date 2018-11-27
+ *
+ * @copyright Copyright (c) 2018
+ *
+ */
 #include "distancia.h"
 #include <stdlib.h>
 #include <math.h>

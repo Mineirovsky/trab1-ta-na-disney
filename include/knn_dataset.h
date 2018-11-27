@@ -1,3 +1,13 @@
+/**
+ * @file knn_dataset.h
+ * @author Gabriel Mineiro (gabrielpfgmineiro@gmail.com)
+ * @brief Módulo para importar e lidar coleções de pontos
+ * @version 1.0
+ * @date 2018-11-27
+ *
+ * @copyright Copyright (c) 2018
+ *
+ */
 #ifndef CSV_KNN_H
 #define CSV_KNN_H
 

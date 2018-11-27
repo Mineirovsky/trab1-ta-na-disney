@@ -1,3 +1,13 @@
+/**
+ * @file knn.c
+ * @author Gabriel Mineiro (gabrielpfgmineiro@gmail.com)
+ * @brief Implementação de um algorítmo KNN
+ * @version 1.0
+ * @date 2018-11-27
+ *
+ * @copyright Copyright (c) 2018
+ *
+ */
 #include "knn.h"
 #include "distancia.h"
 #include <stdio.h>

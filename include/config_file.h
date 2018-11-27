@@ -1,4 +1,14 @@
 #ifndef CONF_FILE_H
+/**
+ * @file config_file.h
+ * @author Gabriel Mineiro (gabrielpfgmineiro@gmail.com)
+ * @brief Módulo para lidar com o arquivo de configuração
+ * @version 1.0
+ * @date 2018-11-27
+ *
+ * @copyright Copyright (c) 2018
+ *
+ */
 #define CONF_FILE_H
 
 #include <stdio.h>

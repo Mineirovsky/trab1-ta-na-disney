@@ -1,3 +1,13 @@
+/**
+ * @file distancia.h
+ * @author Gabriel Mineiro (gabrielpfgmineiro@gmail.com)
+ * @brief Módulo para calcular distâncias
+ * @version 1.0
+ * @date 2018-11-27
+ *
+ * @copyright Copyright (c) 2018
+ *
+ */
 #ifndef DISTANCIA_H
 #define DISTANCIA_H
 

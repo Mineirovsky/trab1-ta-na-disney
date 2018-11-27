@@ -1,3 +1,13 @@
+/**
+ * @file trab1.h
+ * @author Gabriel Mineiro (gabrielpfgmineiro@gmail.com)
+ * @brief Classifica pontos usando algorítmo KNN
+ * @version 1.0
+ * @date 2018-11-27
+ *
+ * @copyright Copyright (c) 2018
+ *
+ */
 #ifndef TRAB1_H
 #define TRAB1_H
 

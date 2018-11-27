@@ -1,3 +1,13 @@
+/**
+ * @file result.c
+ * @author Gabriel Mineiro (gabrielpfgmineiro@gmail.com)
+ * @brief Módulo para lidar com resultados de baterias de testes
+ * @version 1.0
+ * @date 2018-11-27
+ *
+ * @copyright Copyright (c) 2018
+ *
+ */
 #include "result.h"
 #include "confusion_matrix.h"
 #include "knn.h"

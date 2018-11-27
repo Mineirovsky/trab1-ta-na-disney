@@ -1,3 +1,13 @@
+/**
+ * @file config_file.c
+ * @author Gabriel Mineiro (gabrielpfgmineiro@gmail.com)
+ * @brief Módulo para lidar com o arquivo de configuração
+ * @version 1.0
+ * @date 2018-11-27
+ *
+ * @copyright Copyright (c) 2018
+ *
+ */
 #include "config_file.h"
 #include <stdio.h>
 #include <stdlib.h>
