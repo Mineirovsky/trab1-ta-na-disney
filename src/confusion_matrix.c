@@ -30,6 +30,7 @@ unsigned int *cm_map (ConfusionMatrix *cm, unsigned int predicted, unsigned int 
 
 unsigned int _cm_label_pos (ConfusionMatrix *cm, int label)
 {
+    // Procura pela lebel na lista de labels da matriz de confusão
     for (int i = 0; i < cm->size; i++)
     {
         if (cm->labels[i] == label) return i;
@@ -41,26 +42,36 @@ unsigned int _cm_label_pos (ConfusionMatrix *cm, int label)
 
 int cm_inc (ConfusionMatrix *cm, unsigned int predicted, unsigned int correct)
 {
+    // Encontra a posição das labels na lista de labels
     unsigned int predicted_pos = _cm_label_pos(cm, predicted);
     unsigned int correct_pos = _cm_label_pos(cm, correct);
 
+    // Verifica se a label está listada
     if (predicted_pos == cm->size || correct_pos == cm->size)
     {
         printf("[ConfusionMatrix] ERROR: A given label is not listed");
+    } else
+    {
+        // Incrementa a posição adequada da matriz
+        (*cm_map(cm, predicted_pos, correct_pos))++;
     }
-
-    (*cm_map(cm, predicted_pos, correct_pos))++;
 
     return predicted == correct;
 }
 
 void cm_delete (ConfusionMatrix *cm)
 {
-    free(cm->data);
-    cm->data = NULL;
+    if (cm->data)
+    {
+        free(cm->data);
+        cm->data = NULL;
+    }
 
-    free(cm->labels);
-    cm->labels = NULL;
+    if (cm->labels)
+    {
+        free(cm->labels);
+        cm->labels = NULL;
+    }
 }
 
 int cm_fprint (ConfusionMatrix *cm, FILE *dest)
