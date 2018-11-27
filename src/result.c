@@ -30,4 +30,6 @@ void result_delete(Result *result)
         free(result->predictions);
         result->predictions = NULL;
     }
+
+    cm_delete(&result->cm);
 }

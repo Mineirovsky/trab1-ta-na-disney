@@ -189,25 +189,25 @@ Conf get_config (FILE *conf_file)
 
 void conf_delete (Conf *conf)
 {
-    if (!conf->training_file)
+    if (conf->training_file)
     {
         free(conf->training_file);
         conf->training_file = NULL;
     }
 
-    if (!conf->testing_file)
+    if (conf->testing_file)
     {
         free(conf->testing_file);
         conf->testing_file = NULL;
     }
 
-    if (!conf->results_dir)
+    if (conf->results_dir)
     {
         free(conf->results_dir);
         conf->results_dir = NULL;
     }
 
-    if (!conf->run_setups)
+    if (conf->run_setups)
     {
         free(conf->run_setups);
         conf->run_setups = NULL;

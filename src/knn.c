@@ -281,12 +281,16 @@ KnnLL knn_get_labels (KnnDP *dataset, unsigned int dataset_s)
 
     for (int i = 0; i < dataset_s; i++)
     {
+        // Identificador se a label já foi listada
         labels_eq = 0;
         // Encontrar se a label já foi listada
         for (int j = 0; j <= counter; j++)
         {
+            if (dataset[i].label == labels[j]) labels_eq = 1;
+        }
+        {
             // Se não encontrar, registra e incrementa o contador
-            if (dataset[i].label != labels[j])
+            if (!labels_eq)
             {
                 labels[counter] = dataset[i].label;
                 counter++;

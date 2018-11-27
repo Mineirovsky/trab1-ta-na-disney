@@ -221,7 +221,7 @@ int main(int argc, char const *argv[])
             {
                 if (!freopen(result_filename_buffer, "w", result_file))
                 {
-                    printf("Error creating %s result file, disk may be full\n", result_file);
+                    printf("Error creating %s result file, disk may be full\n", result_filename_buffer);
                     return EXIT_FAILURE;
                 }
             }
@@ -238,9 +238,20 @@ int main(int argc, char const *argv[])
         /* TODO */
     }
 
+    // Limpa memória de resultados
+    for (int i = 0; i < config.runs; i++)
+    {
+        result_delete(results + i);
+    }
+    free(results);
+
+    // Limpa a memória de configuração
+    conf_delete(&config);
+
     // Limpa a memória das coleções
     knn_dataset_delete(dataset, dataset_s);
     knn_dataset_delete(testset, testset_s);
+
 
     return EXIT_SUCCESS;
 }
