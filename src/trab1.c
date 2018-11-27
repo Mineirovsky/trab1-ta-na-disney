@@ -11,7 +11,6 @@
 
 int main(int argc, char const *argv[])
 {
-    FILE *config_file;
     // Imprime ajuda
     if (
         argc > 1 &&
@@ -32,7 +31,10 @@ int main(int argc, char const *argv[])
     char training_filepath[4097], testing_filepath[4097], results_dirpath[4097];
     int has_result_file = 0;
 
+    // Objetos de configuração
+    FILE *config_file;
     Conf config;
+
     // Parâmetros para as medições
     char distance_algorithm = 'E';
     unsigned int k = 7;
@@ -149,6 +151,7 @@ int main(int argc, char const *argv[])
         csv_print(testing_csv);
     }
 
+    // Verifica se a coleção de treino e de testes são compatíveis
     if (testing_csv.columns != training_csv.columns)
     {
         puts("ERROR: Training set and testing set don't match size");
@@ -177,6 +180,7 @@ int main(int argc, char const *argv[])
         knn_dataset_print(testset, testset_s, n);
     }
 
+    // Testa todos os parâmetros configurados e armazena em um vetor de resultados
     Result *results = knn_batch(n, dataset, dataset_s, testset, testset_s, config);
 
     if (g_verbose)
@@ -189,28 +193,52 @@ int main(int argc, char const *argv[])
 
     // Salvar arquivos de resultados
     FILE *result_file;
-    char result_filename_buffer[257];
+    // Buffer para o nome dos arquivos de resultado
+    char result_filename_buffer[4097];
     if (use_cfg)
     {
         for (int i = 0; i < config.runs; i++)
         {
+            // Formata e armazena o nome do arquivo de resultados num buffer
             sprintf(
                 result_filename_buffer,
                 "%spredicao_%d.txt",
                 use_cfg ? config.results_dir : results_dirpath,
                 i + 1
             );
-            if (!i) result_file = fopen(result_filename_buffer, "w");
-            else freopen(result_filename_buffer, "w", result_file);
+            if (!i)
+            {
+                result_file = fopen(result_filename_buffer, "w");
+                // Verifica se foi possível criar o arquivo, se não, é provável
+                // que o diretório de resultados não exista.
+                if (!result_file)
+                {
+                    puts("Error saving results, maybe the saving folder does not exist or we do not have permission to write");
+                    return EXIT_FAILURE;
+                }
+            }
+            else
+            {
+                if (!freopen(result_filename_buffer, "w", result_file))
+                {
+                    printf("Error creating %s result file, disk may be full\n", result_file);
+                    return EXIT_FAILURE;
+                }
+            }
 
+            // Salva o resultado no arquivo
             result_fprint(results[i], result_file);
         }
+        // Garantir que o último arquivo não ficou aberto
         fclose(result_file);
     } else if (has_result_file)
+    // No caso de não estar usando arquivo de configuração, salva se for especificado
+    // o parâmetro com o arquivo de resultado
     {
-
+        /* TODO */
     }
 
+    // Limpa a memória das coleções
     knn_dataset_delete(dataset, dataset_s);
     knn_dataset_delete(testset, testset_s);
 

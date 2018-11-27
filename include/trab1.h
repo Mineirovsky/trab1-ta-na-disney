@@ -20,6 +20,10 @@ int g_verbose = 0; /** Variável global para exibir detalhes sobre a execução 
 
 int main(int argc, char const *argv[]);
 
+/**
+ * @brief Imprime texto de ajuda
+ *
+ */
 void print_help ();
 
 #if __cplusplus
