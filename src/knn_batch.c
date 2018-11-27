@@ -29,25 +29,35 @@ Result *knn_batch(
     int labels_s = labels.count;
     for (int i = 0; i < labels_s; i++)
     {
-        labels_i[i] = labels.labels[i];
+        labels_i[i] = (int)labels.labels[i];
     }
+    // Libera a memória das labels
     free(labels.labels);
 
+    // Classe obtida
     KnnLabel class;
     KnnDA da;
 
+    // Contador de assertos
     unsigned int assertions;
 
+    // Matriz de confusão
     ConfusionMatrix cm;
 
+    // Parâmetros da rodada de testes
     ConfRS *rs;
+    // Executa testes para cada configuração listada no arquivo de configuração
     for (int i = 0; i < conf.runs; i++)
     {
+        // Inicializa métricas
         assertions = 0;
         cm = cm_new(labels.count);
         cm_set_labels(&cm, labels_i);
 
+        // Deferencia os parâmetros, pela legibilidade
         rs = conf.run_setups + i;
+
+        // Converte o identificador por char para o equivalente do enumerador
         switch (rs->algorithm)
         {
             case 'C':
@@ -63,18 +73,23 @@ Result *knn_batch(
                 break;
         }
 
+        // Classifica cada ponto
         for (int j = 0; j < testset_s; j++)
         {
             class = results[i].predictions[j] = knn_classify(testset + j, dataset, dataset_s, n, rs->k, da, rs->r);
+            // Contabiliza as métricas
             if (cm_inc(&cm, (int)class, (int)testset[j].label)) assertions++;
         }
 
+        // Copia os resultados para o objeto
         results[i].assertions = assertions;
         results[i].accuracy = (float) assertions / (float) testset_s;
         results[i].cm = cm;
         results[i].samples = testset_s;
     }
 
+    // Libera o vetor de labels int
     free(labels_i);
+
     return results;
 }

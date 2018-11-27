@@ -9,6 +9,18 @@
 extern "C" {
 #endif // __cplusplus
 
+/**
+ * @brief Testa uma série de pontos conta uma coleção de treino e armazena o
+ * resultado em um vetor de resultados
+ *
+ * @param n Tamanho do espaço dimensional dos pontos
+ * @param dataset Coleção de treino
+ * @param dataset_s Tamanho da coleção de treino
+ * @param testset Coleção de testes
+ * @param testset_s Tamanho da coleção de testes
+ * @param conf Objeto de configuração
+ * @return Result* Vetor de resultados, do mesmo tamanho que a coleção de testes
+ */
 Result *knn_batch(
     unsigned int n,
     KnnDP *dataset,
