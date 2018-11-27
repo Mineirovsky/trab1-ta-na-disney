@@ -13,6 +13,7 @@ unsigned int _conf_line_length (FILE *conf_file)
     char c;
     unsigned int count = 1;
 
+    // Conta cada caracter até encontrar uma quabra de linha ou EOF
     do
     {
         c = fgetc(conf_file);
@@ -21,6 +22,7 @@ unsigned int _conf_line_length (FILE *conf_file)
 
     } while (c != EOF);
 
+    // Retorna o ponteiro do arquivo para a posição original
     fseek(conf_file, -(long int)count, SEEK_CUR);
 
     return count;
@@ -35,12 +37,18 @@ unsigned int _conf_line_length (FILE *conf_file)
  */
 char *_conf_get_line (FILE *conf_file)
 {
+    // Armazena a posição atual do arquivo
     long int fpos = ftell(conf_file);
+    // Mede o tamanho da linha
     unsigned int length = _conf_line_length(conf_file);
 
+    // Aloca uma string to tamanho da linha
     char *string = malloc(sizeof(char) * length);
 
+    // Copia a linha para a string
     fgets(string, length, conf_file);
+
+    // Posiciona o ponteiro do arquivo na posição após a linha lida
     fseek(conf_file, fpos + (long)length, SEEK_SET);
 
     return string;
@@ -56,13 +64,18 @@ int _conf_param_count(char *string)
 {
     unsigned int counter = 1;
     int i = 0;
+
+    // Conta quantas vírgulas existem na string
     do
     {
         if (string[i] == ',')
         {
+            // Verifica se o caracter posterior à vírgula não caracteriza
+            // parâmetro vazio
             if (!(string[i + 1] == ','  || string[i + 1] == '\0')) counter++;
             else
             {
+                // Esta valor indica que a string é inválida
                 return -1;
             }
         }
@@ -82,10 +95,13 @@ int _conf_param_count(char *string)
 ConfRS _conf_get_rs (FILE *conf_file)
 {
     ConfRS rs;
+
+    // Extrai a linha atual do arquivo
     char *string = _conf_get_line(conf_file);
+    // Conta os parâmetros na linha
     int param_count = _conf_param_count(string);
 
-
+    // Seleciona o scanf adequado para a quantidade de parâmtros
     switch (param_count)
     {
         case 2:
@@ -107,6 +123,7 @@ ConfRS _conf_get_rs (FILE *conf_file)
             break;
     }
 
+    // Libera a string
     free(string);
 
     // Garantir que o caracter do algorítmo é maiúsculo
@@ -127,19 +144,24 @@ unsigned int _conf_count_remaining_lines (FILE *conf_file)
 {
     int counter = 1;
     char c;
+
+    // Armazena a posição atual do arquivo
     long int fpos = ftell(conf_file);
 
+    // Procura por quebras de linha até o final do arquivo
     do
     {
         c = fgetc(conf_file);
         if (c == '\n')
         {
+            // Evita de contar uma linha vazia no final do arquivo
             c = fgetc(conf_file);
             if (c != EOF) counter++;
             fseek(conf_file, -1, SEEK_CUR);
         }
     } while (c != EOF);
 
+    // Retorna o ponteiro do arquivo para a posição orignal
     fseek(conf_file, fpos, SEEK_SET);
 
     return counter;
@@ -154,6 +176,7 @@ Conf get_config (FILE *conf_file)
 
     conf.runs = _conf_count_remaining_lines(conf_file);
 
+    // Aloca espaço para os parâmtros das rodadas de testes
     conf.run_setups = malloc(sizeof(ConfRS) * conf.runs);
 
     for (int i = 0; i < conf.runs; i++)
@@ -167,21 +190,30 @@ Conf get_config (FILE *conf_file)
 void conf_delete (Conf *conf)
 {
     if (!conf->training_file)
-    free(conf->training_file);
-    conf->training_file = NULL;
+    {
+        free(conf->training_file);
+        conf->training_file = NULL;
+    }
 
     if (!conf->testing_file)
-    free(conf->testing_file);
-    conf->testing_file = NULL;
+    {
+        free(conf->testing_file);
+        conf->testing_file = NULL;
+    }
 
     if (!conf->results_dir)
-    free(conf->results_dir);
-    conf->results_dir = NULL;
+    {
+        free(conf->results_dir);
+        conf->results_dir = NULL;
+    }
 
     if (!conf->run_setups)
-    free(conf->run_setups);
-    conf->run_setups = NULL;
+    {
+        free(conf->run_setups);
+        conf->run_setups = NULL;
+    }
 }
+
 void print_rs (ConfRS rs)
 {
     printf("k: %d, a: %c, r: %.2f\n", rs.k, rs.algorithm, rs.r);
