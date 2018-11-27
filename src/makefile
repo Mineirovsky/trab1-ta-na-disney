@@ -3,7 +3,7 @@ CC=gcc
 IDIR=../include
 ODIR=../obj
 
-CFLAGS=-I$(IDIR) -std=c11 -g
+CFLAGS=-I$(IDIR) -std=c11 -O2
 
 LIBS=-lm
 
