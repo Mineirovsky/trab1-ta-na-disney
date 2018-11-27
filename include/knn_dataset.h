@@ -8,10 +8,29 @@
 extern "C" {
 #endif // __cplusplus
 
+/**
+ * @brief Gera um dataset de KnnDP a partir de um objeto de tabela CSV
+ *
+ * @param csv Objeto de tabela
+ * @return KnnDP* Vetor de pontos
+ */
 KnnDP *knn_dataset_from_csv (Csv csv);
 
+/**
+ * @brief Limpa a memória alocada por um dataset
+ *
+ * @param dataset Dataset
+ * @param dataset_s Tamanho do dataset
+ */
 void knn_dataset_delete (KnnDP *dataset, unsigned int dataset_s);
 
+/**
+ * @brief Imprime o conteúdo de um dataset
+ *
+ * @param dataset Dataset a ser impresso
+ * @param dataset_s Tamanho do dataset
+ * @param n Tamanho do espaço vetorial do dataset
+ */
 void knn_dataset_print (KnnDP *dataset, unsigned int dataset_s, unsigned int n);
 
 #if __cplusplus

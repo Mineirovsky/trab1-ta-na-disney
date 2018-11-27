@@ -5,15 +5,24 @@
 
 KnnDP *knn_dataset_from_csv (Csv csv)
 {
+    // Aloca espaço para o dataset
     KnnDP *dataset = malloc(sizeof(KnnDP) * csv.rows);
+    // Ponteiro para a linha atual da tabela
     float *row_ptr;
+
+    // O tamanho do espaço vetorial do dataset é uma unidade menor que a quantidade
+    // de colunas na tabela csv
     unsigned int n = csv.columns - 1;
+
 
     for (int i = 0; i < csv.rows; i++)
     {
+        // Seta o ponteiro para a linha da tabela correta
         row_ptr = csv_map(csv, i, 0);
+        // Inicializa o ponto e aloca espaço para os valores
         dataset[i] = knn_new(row_ptr[n], malloc(sizeof(float) * n));
 
+        // Copia os valores do ponto
         memcpy(dataset[i].data, row_ptr, sizeof(float) * n);
     }
 
