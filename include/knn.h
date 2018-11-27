@@ -69,6 +69,13 @@ typedef struct knn_distance
     float distance; /** Distância calculada */
 } KnnDT;
 
+/**
+ * @brief Cria um novo objeto relacionando distância a um ponto
+ *
+ * @param p Ponto a ser ligado
+ * @param distance Distância calculada
+ * @return KnnDT Objeto de distância
+ */
 KnnDT knn_dt_new(KnnDP *p, float distance);
 
 /**
@@ -113,16 +120,37 @@ KnnLabel knn_classify (
     float r
 );
 
+/**
+ * @brief Limpa a memória de utilizada por um KnnDP
+ *
+ * @param dp Ponto a ser deletado
+ */
 void knn_delete (KnnDP *dp);
 
+/**
+ * @brief Imprime o conteúdo de um ponto
+ *
+ * @param dp Ponto a ser impresso
+ * @param n Tamanho espaço dimensional
+ */
 void knn_print (KnnDP *dp, unsigned int n);
 
+/**
+ * @brief Estrutura para acomodar o resultado de knn_get_labels
+ *
+ */
 typedef struct knn_label_list
 {
-    unsigned int count;
-    KnnLabel *labels;
+    unsigned int count; /** Quantidade de labels */
+    KnnLabel *labels; /** Vetor de labels */
 } KnnLL;
-
+ /**
+  * @brief Encontra cada label única em um dataset
+  *
+  * @param dataset Dataset a ser procurado
+  * @param dataset_s Tamanho do dataset
+  * @return KnnLL Objeto com as labels encontradas
+  */
 KnnLL knn_get_labels (KnnDP *dataset, unsigned int dataset_s);
 
 #if __cplusplus
